@@ -18,13 +18,13 @@ def greetings(datetime_str: str) -> str:
     datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
     current_time = datetime_obj.time()
 
-    if night_morning <= current_time < morning_afternoon:
-        greeting = GREETINGS_DICT.get("morning")
-    elif afternoon_evening <= current_time < evening_night:
-        greeting = GREETINGS_DICT.get("afternoon")
-    elif evening_night <= current_time < night_morning:
-        greeting = GREETINGS_DICT.get("evening")
-    else:
+    if evening_night <= current_time < night_morning:
         greeting = GREETINGS_DICT.get("night")
+    elif night_morning <= current_time < morning_afternoon:
+        greeting = GREETINGS_DICT.get("morning")
+    elif morning_afternoon <= current_time < afternoon_evening:
+        greeting = GREETINGS_DICT.get("afternoon")
+    else:
+        greeting = GREETINGS_DICT.get("evening")
 
     return greeting

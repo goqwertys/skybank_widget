@@ -1,7 +1,12 @@
+import logging
+
+LOG_LEVEL = logging.DEBUG
+
 GREETINGS_DICT = {
     "morning": "Доброе утро",
     "afternoon": "Добрый день",
-    "evening": "Добрый вечер"
+    "evening": "Добрый вечер",
+    "night": "Доброй ночи"
 }
 
 
