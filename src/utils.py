@@ -1,4 +1,3 @@
-import paths
 import os
 import logging
 import pandas as pd
@@ -16,7 +15,7 @@ fh.setFormatter(formatter)
 logger.addHandler(fh)
 
 
-def get_transactions(path: str) -> pd.DataFrame:
+def load_operations(path: str) -> pd.DataFrame:
     """Takes as input a path to XLSX file and returns a list of dictionaries with data about
         financial transactions."""
     try:
