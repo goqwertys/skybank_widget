@@ -16,20 +16,19 @@ fh.setFormatter(formatter)
 logger.addHandler(fh)
 
 
-def get_transactions(path: str) -> list[dict]:
+def get_transactions(path: str) -> pd.DataFrame:
     """Takes as input a path to XLSX file and returns a list of dictionaries with data about
         financial transactions."""
     try:
         data = pd.read_excel(path)
-        result = data.to_dict(orient='records')
         logger.info(f"Operations have been successfully loaded from {path}")
-        return [dict(item) for item in result]
+        return data
     except FileNotFoundError:
         logger.error(f"File not found: {path}")
-        return []
+        return pd.DataFrame()
     except pd.errors.EmptyDataError:
         logger.error(f"No data found in file: {path}")
-        return []
+        return pd.DataFrame()
     except Exception as ex:
         logger.error(f"An error has occurred: {ex}")
-        return []
+        return pd.DataFrame()
