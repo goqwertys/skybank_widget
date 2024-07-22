@@ -1,6 +1,7 @@
 import os
 import logging
 import pandas as pd
+from datetime import datetime
 
 from src.config import LOG_LEVEL
 from src.paths import get_project_root
@@ -31,3 +32,8 @@ def load_operations(path: str) -> pd.DataFrame:
     except Exception as ex:
         logger.error(f"An error has occurred: {ex}")
         return pd.DataFrame()
+
+
+def start_of_month(dt: datetime) -> datetime:
+    """Returns a datetime object representing the very beginning of the month in this datetime object"""
+    return datetime(year=dt.year, month=dt.month, day=1, hour=0, minute=0, second=0, microsecond=0)
