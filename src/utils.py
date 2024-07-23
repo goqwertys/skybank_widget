@@ -81,3 +81,18 @@ def get_cards_info(transactions: pd.DataFrame) -> pd.DataFrame:
 
     logger.info("Aggregation complete")
     return aggregated_df
+
+
+def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
+    """Returns the top 5 transactions by amount with specific details"""
+    logger.info("Starting to retrieve top 5 transactions")
+
+    if df.empty:
+        logger.info("Dataframe is empty")
+        return df
+
+    logger.info("Sorting dataframe by 'Сумма операции' in descending order")
+    top_5_df = df.nlargest(5, 'Сумма операции')[['Дата операции', 'Сумма операции', 'Категория', 'Описание']]
+
+    logger.info("Retrieved top 5 transactions")
+    return top_5_df
