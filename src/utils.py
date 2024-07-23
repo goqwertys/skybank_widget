@@ -65,4 +65,19 @@ def filter_by_current_month(df: pd.DataFrame, current_dt: datetime) -> pd.DataFr
 
 
 def get_cards_info(transactions: pd.DataFrame) -> pd.DataFrame:
-    pass
+    """Aggregate data by unique card number to get total expenses and cashback"""
+    logger.info("Starting data aggregation")
+
+    if transactions.empty:
+        logger.info("Dataframe is empty")
+        return transactions
+
+    logger.info("Grouping data by 'Номер карты'")
+    aggregated_df: pd.DataFrame = transactions.groupby("Номер карты").agg(
+        last_digits=('Номер карты', "first"),
+        total_spent=('Сумма операции', 'sum'),
+        cashback=('Сумма операции', lambda x: x.sum() // 100)
+    ).reset_index(drop=True)
+
+    logger.info("Aggregation complete")
+    return aggregated_df
