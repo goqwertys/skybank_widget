@@ -45,7 +45,12 @@ def expected_filtered():
 @pytest.fixture
 def cards_data():
     data = {
-        'Дата операции': ['2024-07-01 12:34:56', '2024-07-15 09:10:11', '2024-07-20 14:15:16', '2024-07-25 17:18:19'],
+        'Дата операции': [
+            '2024-07-01 12:34:56',
+            '2024-07-15 09:10:11',
+            '2024-07-20 14:15:16',
+            '2024-07-25 17:18:19'
+        ],
         'Номер карты': ['1234', '1234', '5678', '5678'],
         'Сумма операции': [1000, 2000, 1500, 2500],
         'Кешбэк': [10, 20, 15, 25],
@@ -54,3 +59,61 @@ def cards_data():
     df = pd.DataFrame(data)
     df['Дата операции'] = pd.to_datetime(df['Дата операции'], format="%Y-%m-%d %H:%M:%S")
     return df
+
+
+@pytest.fixture
+def transactions_data():
+    data = {
+        'Дата операции': [
+            '2024-07-01 12:34:56',
+            '2024-07-15 09:10:11',
+            '2024-07-20 14:15:16',
+            '2024-07-25 17:18:19',
+            '2024-07-30 20:21:22',
+            '2024-07-05 10:11:12',
+            '2024-07-10 13:14:15',
+            '2024-07-18 16:17:18',
+            '2024-07-28 19:20:21',
+            '2024-07-22 08:09:10'
+        ],
+        'Сумма операции': [
+            1000,
+            2000,
+            1500,
+            2500,
+            3000,
+            800,
+            1800,
+            500,
+            3500,
+            1200
+        ],
+        'Категория': [
+            'Category A',
+            'Category B',
+            'Category C',
+            'Category D',
+            'Category E',
+            'Category F',
+            'Category G',
+            'Category H',
+            'Category I',
+            'Category J'
+        ],
+        'Описание': [
+            'Description A',
+            'Description B',
+            'Description C',
+            'Description D',
+            'Description E',
+            'Description F',
+            'Description G',
+            'Description H',
+            'Description I',
+            'Description J'
+        ]
+    }
+    df = pd.DataFrame(data)
+    df['Дата операции'] = pd.to_datetime(df['Дата операции'], format="%Y-%m-%d %H:%M:%S")
+    return df
+
