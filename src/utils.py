@@ -85,7 +85,11 @@ def get_cards_info(transactions: pd.DataFrame) -> pd.DataFrame:
 
 def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
     """Returns the top 5 transactions by amount"""
+    logger.info("Start processing function get_top_5_transactions")
+    logger.debug(f"Исходный DataFrame:\n{df}")
+
     if df.empty:
+        logger.info("DataFrame is empty")
         return pd.DataFrame()
 
     top_5 = df.nlargest(5, 'Сумма операции')[['Дата операции', 'Сумма операции', 'Категория', 'Описание']]
@@ -93,5 +97,8 @@ def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
 
     # Convert 'date' to string for consistent comparison
     top_5['date'] = top_5['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
+
+    logger.info("Finishing processing the get_top_5_transactions function")
+    logger.info("Resulting DataFrame:\n{result_df}")
 
     return top_5
