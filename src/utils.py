@@ -41,17 +41,28 @@ def start_of_month(dt: datetime) -> datetime:
 
 def filter_by_current_month(df: pd.DataFrame, current_dt: datetime) -> pd.DataFrame:
     """Returns a filtered dataframe by time range and 'OK' status"""
+    logger.info(f"Filtering dataframe by current month: {current_dt}")
     if df.empty:
+        logger.info("Dataframe is empty")
         return df
 
     # Ensure the 'Дата операции' column is in datetime format
     if not pd.api.types.is_datetime64_any_dtype(df['Дата операции']):
+        logger.info("Converting 'Дата операции' column to datetime format")
         df['Дата операции'] = pd.to_datetime(df['Дата операции'], format="%d.%m.%Y %H:%M:%S")
 
     start_dt = start_of_month(current_dt)
     end_dt = current_dt
 
+    logger.info(f"Filtering between {start_dt} and {end_dt}")
+
     # Filter by the date range and 'OK' status
     result = df[(df['Дата операции'].between(start_dt, end_dt)) & (df["Статус"] == "OK")]
 
+    logger.info(f"Filtered dataframe size: {result.shape[0]}")
+
     return result
+
+
+def get_cards_info(transactions: pd.DataFrame) -> pd.DataFrame:
+    pass
