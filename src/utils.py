@@ -2,6 +2,7 @@ import os
 import logging
 import pandas as pd
 from datetime import datetime
+import json
 
 from src.config import LOG_LEVEL
 from src.paths import get_project_root
@@ -85,7 +86,7 @@ def get_cards_info(transactions: pd.DataFrame) -> pd.DataFrame:
 
 def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
     """Returns the top 5 transactions by amount"""
-    logger.info("Start processing function get_top_5_transactions")
+    logger.info("Start processing get_top_5_transactions()")
     logger.debug(f"Исходный DataFrame:\n{df}")
 
     if df.empty:
