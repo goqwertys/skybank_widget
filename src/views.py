@@ -56,8 +56,8 @@ def get_main_page_info(datetime_str: str) -> JSONType:
         "greetings": greetings(datetime_str),
         "cards": get_cards_info(filtered_operations).to_dict(orient="records"),
         "top_transactions": get_top_5_transactions(filtered_operations).to_dict(orient="records"),
-        "currency_rates": get_currency_rates(currencies).to_dict(orient="records"),
-        "stock_prices": get_stocks_prices(symbols).to_dict(orient="records")
+        # "currency_rates": get_currency_rates(currencies).to_dict(orient="records"),
+        # "stock_prices": get_stocks_prices(symbols).to_dict(orient="records")
     }
 
     return result
@@ -66,11 +66,10 @@ def get_main_page_info(datetime_str: str) -> JSONType:
 def get_events_page_info(datetime_str: str, period: Literal["ALL", "W", "M", "Y"]) -> JSONType:
     """  Returns full JSON data for "EVENTS" PAGE """
 
-    current_dt = datetime.strptime(datetime_str, )
     # loading and filtering operations
     load_path = os.path.join(get_project_root(), DATA_FOLDER, OPERATIONS_FILENAME)
     operations_df = load_operations(load_path)
-    filtered_operations = filter_operations_by_period(operations_df, current_dt, period)
+    filtered_operations = filter_operations_by_period(operations_df, pd.to_datetime(datetime_str), period)
 
     # Loading currencies and stocks from user_settings.json
     settings_path = os.path.join(get_project_root(), DATA_FOLDER, "user_settings.json")
@@ -80,16 +79,16 @@ def get_events_page_info(datetime_str: str, period: Literal["ALL", "W", "M", "Y"
     # Formation of results
     result = {
         "expenses": {
-            "total_amount": get_total_expenses(filtered_operations).to_dict(orient="records"),
+            "total_amount": get_total_expenses(filtered_operations),
             "main": get_main_expenses(filtered_operations).to_dict(orient="records"),
             "transfers_and_cash": get_transfers_cash(filtered_operations).to_dict(orient="records")
         },
         "income": {
-            "total_amount": get_total_income(filtered_operations).to_dict(orient="records"),
+            "total_amount": get_total_income(filtered_operations),
             "main": get_main_income(filtered_operations).to_dict(orient="records")
         },
-        "currency_rates": get_currency_rates(currencies).to_dict(orient="records"),
-        "stock_prices": get_stocks_prices(symbols).to_dict(orient="records")
+        # "currency_rates": get_currency_rates(currencies).to_dict(orient="records"),
+        # "stock_prices": get_stocks_prices(symbols).to_dict(orient="records")
     }
 
     return result

@@ -172,29 +172,85 @@ def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
     top_5['date'] = top_5['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
 
     logger.info("Finishing processing the get_top_5_transactions function")
-    logger.info("Resulting DataFrame:\n{result_df}")
+    logger.info(f"Resulting DataFrame:\n{top_5}")
 
     return top_5
 
 
-def get_total_expenses(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+def get_total_expenses(df: pd.DataFrame) -> float:
+    """ Returns the amount of expenses """
+    logger.info("Getting total expences...")
+    logger.debug(f"Исходный DataFrame:\n{df.shape}")
+
+    if df.empty:
+        logger.info("DataFrame is empty")
+        return 0.0
+
+    result = -df[df["Сумма платежа"] < 0]["Сумма платежа"].sum()
+    logger.info(f"Total expenses = {result}")
+    return result
 
 
 def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    """ Returns DataFrame of expenses by first most expensive categories the rest are combined into one """
+    logger.info("Calculating the main expenses....")
+    logger.debug(f"Исходный DataFrame:\n{df.shape}")
+
+    if df.empty:
+        return pd.DataFrame()
+
+    # Sorting expenses
+    df_expenses = df[df["Сумма операции"] < 0].copy()  # Создаем копию среза
+    df_expenses.loc[:, "Сумма операции"] = df_expenses["Сумма операции"].abs()
+
+    # Grouping
+    df_grouped = df_expenses.groupby("Категория")["Сумма операции"].sum().reset_index()
+
+    # Sorting by values
+    df_sorted = df_grouped.sort_values(by="Сумма операции", ascending=False)
+
+    # Top 7
+    top_categories = df_sorted.head(7).copy()  # Создаем копию
+
+    # Combining the rest
+    other_categories = df_sorted.iloc[7:]
+    other_sum = other_categories["Сумма операции"].sum()
+    other_row = pd.DataFrame({"category": ["Остальное"], "amount": [other_sum]})
+
+    # Renaming
+    top_categories.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
+
+    # Sorting result_df by amount in descending order
+    top_categories = top_categories.sort_values(by='amount', ascending=False).reset_index(drop=True)
+
+    # Union
+    result_df = pd.concat([top_categories, other_row], ignore_index=True)
+
+    logger.info(f"Final main expenses dataframe: {result_df.shape}")
+
+    return result_df
 
 
 def get_transfers_cash(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    return pd.DataFrame()
 
 
-def get_total_income(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+def get_total_income(df: pd.DataFrame) -> float:
+    """ Returns the amount of expenses """
+    logger.info("Getting total expences...")
+    logger.debug(f"Original DataFrame:\n{df}")
+
+    if df.empty:
+        logger.info("DataFrame is empty")
+        return 0.0
+
+    result = df[df["Сумма платежа"] > 0]["Сумма платежа"].sum()
+    logger.info(f"Total income = {result}")
+    return result
 
 
 def get_main_income(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    return pd.DataFrame()
 
 
 # SETTINGS
