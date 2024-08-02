@@ -188,7 +188,7 @@ def get_total_expenses(df: pd.DataFrame) -> float:
 
     result = -df[df["Сумма платежа"] < 0]["Сумма платежа"].sum()
     logger.info(f"Total expenses = {result}")
-    return result
+    return round(result, 2)
 
 
 def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
@@ -201,6 +201,9 @@ def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
 
     # Sorting expenses
     df_expenses = df[df["Сумма операции"] < 0].copy()  # Создаем копию среза
+    if df_expenses.empty:
+        return pd.DataFrame()
+
     df_expenses.loc[:, "Сумма операции"] = df_expenses["Сумма операции"].abs()
 
     # Grouping
@@ -215,7 +218,7 @@ def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
     # Combining the rest
     other_categories = df_sorted.iloc[7:]
     other_sum = other_categories["Сумма операции"].sum()
-    other_row = pd.DataFrame({"category": ["Остальное"], "amount": [other_sum]})
+    other_row = pd.DataFrame({"category": ["Остальное"], "amount": [round(other_sum)]})
 
     # Renaming
     top_categories.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
