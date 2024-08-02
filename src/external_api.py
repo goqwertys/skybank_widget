@@ -64,13 +64,20 @@ def get_stocks_prices(symbols: list[str]) -> pd.DataFrame:
         }
         try:
             response = requests.get(base_url, params=params)
-            response.raise_for_status()
+
             data = response.json()
-            quote = data["Global Quote"]
-            result.append({
-                "symbol": symbol,
-                "price": float(quote["05. price"]),
-            })
+            if data.get("Global Quote"):
+                quote = data["Global Quote"]
+                result.append({
+                    "symbol": symbol,
+                    "price": float(quote["05. price"]),
+                })
+            elif data.get("Information"):
+                logger.warning(data.get("Information"))
+                result.append({
+                    "symbol": symbol,
+                    "price": 0.0,
+                })
         except requests.RequestException as e:
             logger.info(f"Error fetching stock quote data for {symbol}: {e}")
             result.append({
