@@ -53,6 +53,9 @@ def get_stocks_prices(symbols: list[str]) -> pd.DataFrame:
     base_url = "https://www.alphavantage.co/query"
     result = []
 
+    if not symbols:
+        return pd.DataFrame(columns=["symbol", "price"])
+
     for symbol in symbols:
         params = {
             "function": "GLOBAL_QUOTE",
