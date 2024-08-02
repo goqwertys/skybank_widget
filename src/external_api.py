@@ -72,7 +72,7 @@ def get_stocks_prices(symbols: list[str]) -> pd.DataFrame:
             logger.info(f"Error fetching stock quote data for {symbol}: {e}")
             result.append({
                 "symbol": symbol,
-                "price": None,
+                "price": 0.0,
             })
 
     return pd.DataFrame(result)
