@@ -10,7 +10,7 @@ logger = logging.getLogger("utils")
 
 @patch('src.utils.json.load')
 @patch('builtins.open', new_callable=mock_open, read_data='{"user_currencies": ["USD", "EUR"]}')
-def test_get_currencies_success(mock_file, mock_json_load, mock_logger):
+def test_get_currencies_success(mock_file, mock_json_load):
     mock_json_load.return_value = {"user_currencies": ["USD", "EUR"]}
     result = get_currencies('settings.json')
     assert result == ["USD", "EUR"]
