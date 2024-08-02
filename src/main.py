@@ -1,10 +1,10 @@
 import json
 import os.path
 
+from src.config import (DATA_FOLDER, EVENTS_PAGE_INFO_FILENAME,
+                        MAIN_PAGE_INFO_FILENAME)
 from src.paths import get_project_root
-from src.views import get_main_page_info, get_events_page_info
-from src.config import DATA_FOLDER, MAIN_PAGE_INFO_FILENAME, EVENTS_PAGE_INFO_FILENAME
-
+from src.views import get_events_page_info, get_main_page_info
 
 if __name__ == "__main__":
     """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Main logic~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""

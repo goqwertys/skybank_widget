@@ -1,26 +1,19 @@
 """Basic functions for generating JSON responses"""
 import os.path
 from datetime import datetime
-from typing import Union, Dict, List, Literal
+from typing import Dict, List, Literal, Union
 
 import pandas as pd
 
-from src.config import GREETINGS_DICT, NIGHT_MORNING, MORNING_AFTERNOON, AFTERNOON_EVENING, EVENING_NIGHT
+from src.config import (AFTERNOON_EVENING, DATA_FOLDER, EVENING_NIGHT,
+                        GREETINGS_DICT, MORNING_AFTERNOON, NIGHT_MORNING,
+                        OPERATIONS_FILENAME)
 from src.paths import get_project_root
-from src.utils import (
-    load_operations,
-    filter_by_current_month,
-    get_cards_info,
-    get_top_5_transactions,
-    get_currencies,
-    get_stocks,
-    filter_operations_by_period,
-    get_total_expenses,
-    get_main_expenses,
-    get_transfers_cash,
-    get_main_income,
-    get_total_income)
-from src.config import DATA_FOLDER, OPERATIONS_FILENAME
+from src.utils import (filter_by_current_month, filter_operations_by_period,
+                       get_cards_info, get_currencies, get_main_expenses,
+                       get_main_income, get_stocks, get_top_5_transactions,
+                       get_total_expenses, get_total_income,
+                       get_transfers_cash, load_operations)
 
 
 def greetings(datetime_str: str) -> str:

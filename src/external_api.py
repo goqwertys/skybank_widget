@@ -1,7 +1,8 @@
-import requests
-import os
-import pandas as pd
 import logging
+import os
+
+import pandas as pd
+import requests
 from dotenv import load_dotenv
 
 from src.config import LOG_LEVEL
