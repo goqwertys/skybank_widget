@@ -6,11 +6,20 @@ from typing import Union, Dict, List, Literal
 import pandas as pd
 
 from src.config import GREETINGS_DICT, NIGHT_MORNING, MORNING_AFTERNOON, AFTERNOON_EVENING, EVENING_NIGHT
-from src.external_api import get_currency_rates, get_stocks_prices
 from src.paths import get_project_root
-from src.utils import (load_operations, filter_by_current_month, get_cards_info, get_top_5_transactions, \
-                       get_currencies, get_stocks, filter_operations_by_period, get_total_expenses, get_main_expenses,
-                       get_transfers_cash, get_main_income, get_total_income)
+from src.utils import (
+    load_operations,
+    filter_by_current_month,
+    get_cards_info,
+    get_top_5_transactions,
+    get_currencies,
+    get_stocks,
+    filter_operations_by_period,
+    get_total_expenses,
+    get_main_expenses,
+    get_transfers_cash,
+    get_main_income,
+    get_total_income)
 from src.config import DATA_FOLDER, OPERATIONS_FILENAME
 
 

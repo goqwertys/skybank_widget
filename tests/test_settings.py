@@ -65,14 +65,6 @@ def test_get_stocks_json_decode_error(mock_file, mock_json_load):
     assert result == []
 
 
-@patch('src.utils.json.load')
-@patch('builtins.open', new_callable=mock_open, read_data='invalid json')
-def test_get_stocks_json_decode_error(mock_file, mock_json_load):
-    mock_json_load.side_effect = json.JSONDecodeError("Expecting value", 'invalid json', 0)
-    result = get_stocks('invalid.json')
-    assert result == []
-
-
 @patch('builtins.open', new_callable=mock_open)
 def test_get_stocks_other_exception(mock_file):
     mock_file.side_effect = Exception("Some unexpected error")

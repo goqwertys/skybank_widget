@@ -6,50 +6,32 @@ import pytest
 from src.utils import filter_operations_by_period
 
 
-data = {
-    'Дата операции': ['15.10.2023 12:30:45', '16.10.2023 12:30:45', '01.11.2023 12:30:45', '01.01.2024 12:30:45'],
-    'Статус': ['OK', 'OK', 'OK', 'OK']
-}
-df = pd.DataFrame(data)
-
-data_week = {
-    'Дата операции': [
-        '06.08.2024 12:30:45',
-        '08.08.2024 12:30:45',
-        '09.08.2024 12:30:45',
-        '01.01.2024 12:30:45'
-    ],
-    'Статус': ['OK', 'OK', 'OK', 'OK']
-}
-df_week = pd.DataFrame(data_week)
-
-
-def test_filter_operations_by_period_all(df):
+def test_filter_operations_by_period_all(test_df):
     current_dt = datetime(2023, 10, 14, 12, 30, 45)
-    result = filter_operations_by_period(df, current_dt, "ALL")
-    pd.testing.assert_frame_equal(result, df)
+    result = filter_operations_by_period(test_df, current_dt, "ALL")
+    pd.testing.assert_frame_equal(result, test_df)
 
 
 def test_filter_operations_by_period_week(df_week):
     current_dt = datetime(2024, 8, 7, 12, 30, 45)
     result = filter_operations_by_period(df_week, current_dt, "W")
-    dt_start = datetime(2024,8, 5, 0, 0, 0)
+    dt_start = datetime(2024, 8, 5, 0, 0, 0)
     dt_end = datetime(2024, 8, 12, 0, 0, 0)
     expected = df_week[(df_week['Дата операции'] >= dt_start) & (df_week['Дата операции'] < dt_end)]
     pd.testing.assert_frame_equal(result, expected)
 
 
-def test_filter_operations_by_period_month(df):
+def test_filter_operations_by_period_month(test_df):
     current_dt = datetime(2023, 10, 15, 12, 30, 45)
-    result = filter_operations_by_period(df, current_dt, "M")
-    expected = df.iloc[:2]
+    result = filter_operations_by_period(test_df, current_dt, "M")
+    expected = test_df.iloc[:2]
     pd.testing.assert_frame_equal(result, expected)
 
 
-def test_filter_operations_by_period_year(df):
+def test_filter_operations_by_period_year(test_df):
     current_dt = datetime(2023, 10, 15, 12, 30, 45)
-    result = filter_operations_by_period(df, current_dt, "Y")
-    expected = df.iloc[:3]
+    result = filter_operations_by_period(test_df, current_dt, "Y")
+    expected = test_df.iloc[:3]
     pd.testing.assert_frame_equal(result, expected)
 
 
@@ -76,10 +58,10 @@ def test_filter_operations_by_period_non_datetime_column(df_week):
     pd.testing.assert_frame_equal(result, expected)
 
 
-def test_filter_operations_by_period_unknown_period():
+def test_filter_operations_by_period_unknown_period(test_df):
     current_dt = datetime(2023, 10, 15, 12, 30, 45)
     with pytest.raises(ValueError):
-        filter_operations_by_period(df, current_dt, "unknown")
+        filter_operations_by_period(test_df, current_dt, "unknown")
 
 
 def test_filter_operations_by_period_status_filter():

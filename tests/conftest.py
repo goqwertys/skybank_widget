@@ -1,8 +1,5 @@
-from tempfile import NamedTemporaryFile
-
 import pytest
 import pandas as pd
-import json
 
 
 @pytest.fixture
@@ -118,6 +115,7 @@ def transactions_data():
     df['Дата операции'] = pd.to_datetime(df['Дата операции'], format="%Y-%m-%d %H:%M:%S")
     return df
 
+
 @pytest.fixture
 def mock_data():
     return {
@@ -149,3 +147,16 @@ def df_week():
         'Статус': ['OK', 'OK', 'OK', 'OK']
     }
     return pd.DataFrame(data_week)
+
+
+@pytest.fixture
+def test_df():
+    data = {
+        'Дата операции':
+            ['15.10.2023 12:30:45',
+             '16.10.2023 12:30:45',
+             '01.11.2023 12:30:45',
+             '01.01.2024 12:30:45'],
+        'Статус': ['OK', 'OK', 'OK', 'OK']
+    }
+    return pd.DataFrame(data)

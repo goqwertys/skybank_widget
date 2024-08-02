@@ -1,15 +1,9 @@
 import json
 import os.path
 
-import requests
-from dotenv import load_dotenv
-
-from src.external_api import get_stocks_prices
 from src.paths import get_project_root
-from src.utils import get_currencies, get_stocks
 from src.views import get_main_page_info, get_events_page_info
 from src.config import DATA_FOLDER, MAIN_PAGE_INFO_FILENAME, EVENTS_PAGE_INFO_FILENAME
-from src.config import USER_SETTINGS_FILENAME
 
 
 if __name__ == "__main__":

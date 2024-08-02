@@ -1,6 +1,5 @@
-import pytest
 import pandas as pd
-from unittest.mock import patch, mock_open
+from unittest.mock import patch
 from io import BytesIO
 
 from src.utils import load_operations
