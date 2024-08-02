@@ -1,10 +1,9 @@
-import os
 import pytest
 import pandas as pd
 import requests
 from unittest.mock import patch, MagicMock
 from dotenv import load_dotenv
-import logging
+
 
 from src.external_api import get_currency_rates
 
@@ -36,6 +35,15 @@ def test_get_currency_rates_success(mock_env_api_key, mock_requests_get):
 
     result_df = get_currency_rates(currencies)
     pd.testing.assert_frame_equal(result_df, expected_df)
+    assert mock_requests_get.call_count == 2
+    mock_requests_get.assert_any_call(
+        "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=1",
+        headers={"apikey": "test_api_key"}
+    )
+    mock_requests_get.assert_any_call(
+        "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=EUR&amount=1",
+        headers={"apikey": "test_api_key"}
+    )
 
 
 def test_get_currency_rates_exception():
@@ -56,3 +64,4 @@ def test_get_currency_rates_empty_list(mock_env_api_key, mock_requests_get):
 
     result_df = get_currency_rates(currencies)
     pd.testing.assert_frame_equal(result_df, expected_df)
+    mock_requests_get.assert_not_called()

@@ -37,9 +37,18 @@ def test_get_stocks_prices(mock_env_api_key, mock_requests_get):
 
     result_df = get_stocks_prices(symbols)
     pd.testing.assert_frame_equal(result_df, expected_df)
+    assert mock_requests_get.call_count == 2
+    mock_requests_get.assert_any_call(
+        "https://www.alphavantage.co/query",
+        params={"function": "GLOBAL_QUOTE", "symbol": "AAPL", "apikey": "test_api_key"}
+    )
+    mock_requests_get.assert_any_call(
+        "https://www.alphavantage.co/query",
+        params={"function": "GLOBAL_QUOTE", "symbol": "GOOGL", "apikey": "test_api_key"}
+    )
 
 
-def test_get_stocks_prices_exception(mock_env_api_key):
+def test_get_stocks_prices_exception(mock_env_api_key, mock_requests_get):
     symbols = ["AAPL", "GOOGL"]
     expected_df = pd.DataFrame({
         "symbol": ["AAPL", "GOOGL"],
@@ -48,6 +57,7 @@ def test_get_stocks_prices_exception(mock_env_api_key):
     with patch("requests.get", side_effect=requests.RequestException("Test exception")):
         result_df = get_stocks_prices(symbols)
         pd.testing.assert_frame_equal(result_df, expected_df)
+    mock_requests_get.assert_not_called()
 
 
 def test_get_stocks_prices_empty_list(mock_env_api_key, mock_requests_get):
@@ -56,3 +66,4 @@ def test_get_stocks_prices_empty_list(mock_env_api_key, mock_requests_get):
 
     result_df = get_stocks_prices(symbols)
     pd.testing.assert_frame_equal(result_df, expected_df)
+    mock_requests_get.assert_not_called()
