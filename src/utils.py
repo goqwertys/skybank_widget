@@ -148,8 +148,8 @@ def get_cards_info(transactions: pd.DataFrame) -> pd.DataFrame:
     logger.info("Grouping data by 'Номер карты'")
     aggregated_df: pd.DataFrame = transactions.groupby("Номер карты").agg(
         last_digits=('Номер карты', "first"),
-        total_spent=('Сумма операции', 'sum'),
-        cashback=('Сумма операции', lambda x: x.sum() // 100)
+        total_spent=('Сумма операции', lambda x: round(abs(x.sum()), 2)),
+        cashback=('Сумма операции', lambda x: abs(x.sum()) // 100)
     ).reset_index(drop=True)
 
     logger.info("Aggregation complete")
@@ -175,6 +175,26 @@ def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
     logger.info("Resulting DataFrame:\n{result_df}")
 
     return top_5
+
+
+def get_total_expenses(df: pd.DataFrame) -> pd.DataFrame:
+    pass
+
+
+def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
+    pass
+
+
+def get_transfers_cash(df: pd.DataFrame) -> pd.DataFrame:
+    pass
+
+
+def get_total_income(df: pd.DataFrame) -> pd.DataFrame:
+    pass
+
+
+def get_main_income(df: pd.DataFrame) -> pd.DataFrame:
+    pass
 
 
 # SETTINGS
@@ -214,6 +234,3 @@ def get_stocks(settings: str) -> list[str]:
     except Exception as ex:
         logger.error(f"An error has occurred: {ex}")
         return []
-
-
-# API
