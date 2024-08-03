@@ -7,7 +7,7 @@ import pandas as pd
 
 from src.config import (AFTERNOON_EVENING, DATA_FOLDER, EVENING_NIGHT,
                         GREETINGS_DICT, MORNING_AFTERNOON, NIGHT_MORNING,
-                        OPERATIONS_FILENAME)
+                        OPERATIONS_FILENAME, USER_SETTINGS_FILENAME)
 from src.paths import get_project_root
 from src.utils import (filter_by_current_month, filter_operations_by_period,
                        get_cards_info, get_currencies, get_main_expenses,
@@ -74,7 +74,7 @@ def get_events_page_info(datetime_str: str, period: Literal["ALL", "W", "M", "Y"
     filtered_operations = filter_operations_by_period(operations_df, pd.to_datetime(datetime_str), period)
 
     # Loading currencies and stocks from user_settings.json
-    settings_path = os.path.join(get_project_root(), DATA_FOLDER, "user_settings.json")
+    settings_path = os.path.join(get_project_root(), DATA_FOLDER, USER_SETTINGS_FILENAME)
     currencies = get_currencies(settings_path)
     symbols = get_stocks(settings_path)
 

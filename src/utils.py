@@ -184,12 +184,19 @@ def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
 
 def get_total_expenses(df: pd.DataFrame) -> float:
     """ Returns the amount of expenses """
-    logger.info("Getting total expences...")
+    logger.info("Getting total expenses...")
     logger.debug(f"Исходный DataFrame:\n{df.shape}")
 
     if df.empty:
         logger.info("DataFrame is empty")
         return 0.0
+
+    # Убедитесь, что столбец "Сумма платежа" имеет тип данных float
+    if "Сумма платежа" not in df.columns:
+        logger.error("Столбец 'Сумма платежа' отсутствует в DataFrame")
+        return 0.0
+
+    df["Сумма платежа"] = df["Сумма платежа"].astype(float)
 
     result = -df[df["Сумма платежа"] < 0]["Сумма платежа"].sum()
     logger.info(f"Total expenses = {result}")
