@@ -1,9 +1,9 @@
-import pytest
-import pandas as pd
-import requests
-from unittest.mock import patch, MagicMock
-from dotenv import load_dotenv
+from unittest.mock import MagicMock, patch
 
+import pandas as pd
+import pytest
+import requests
+from dotenv import load_dotenv
 
 from src.external_api import get_currency_rates
 

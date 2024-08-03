@@ -1,9 +1,8 @@
 import json
-from unittest.mock import patch, mock_open
 import logging
+from unittest.mock import mock_open, patch
 
 from src.utils import get_currencies, get_stocks
-
 
 logger = logging.getLogger("utils")
 

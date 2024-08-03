@@ -1,7 +1,8 @@
-import pytest
+from unittest.mock import MagicMock, patch
+
 import pandas as pd
+import pytest
 import requests
-from unittest.mock import patch, MagicMock
 from dotenv import load_dotenv
 
 from src.external_api import get_stocks_prices
