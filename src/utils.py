@@ -258,6 +258,7 @@ def get_transfers_cash(df: pd.DataFrame) -> pd.DataFrame:
         grouped_df.columns = ["category", "amount"]
         grouped_df.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
         result = grouped_df.sort_values(by="amount", ascending=False)
+        result = result.reset_index(drop=True)
         logger.info(f"Final main expenses dataframe: {result}")
         return result
 
@@ -293,6 +294,7 @@ def get_main_income(df: pd.DataFrame) -> pd.DataFrame:
     result = df_grouped.sort_values(by="Сумма операции", ascending=False)
 
     result.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
+    result = result.reset_index(drop=True)
     logger.info(f"Final main income dataframe: {result.shape}")
     return result
 

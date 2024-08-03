@@ -8,6 +8,7 @@ import pandas as pd
 from src.config import (AFTERNOON_EVENING, DATA_FOLDER, EVENING_NIGHT,
                         GREETINGS_DICT, MORNING_AFTERNOON, NIGHT_MORNING,
                         OPERATIONS_FILENAME, USER_SETTINGS_FILENAME)
+from src.external_api import get_currency_rates, get_stocks_prices
 from src.paths import get_project_root
 from src.utils import (filter_by_current_month, filter_operations_by_period,
                        get_cards_info, get_currencies, get_main_expenses,
@@ -58,8 +59,8 @@ def get_main_page_info(datetime_str: str) -> JSONType:
         "greetings": greetings(datetime_str),
         "cards": get_cards_info(filtered_operations).to_dict(orient="records"),
         "top_transactions": get_top_5_transactions(filtered_operations).to_dict(orient="records"),
-        # "currency_rates": get_currency_rates(currencies).to_dict(orient="records"),
-        # "stock_prices": get_stocks_prices(symbols).to_dict(orient="records")
+        "currency_rates": get_currency_rates(currencies).to_dict(orient="records"),
+        "stock_prices": get_stocks_prices(symbols).to_dict(orient="records")
     }
 
     return result
@@ -89,8 +90,8 @@ def get_events_page_info(datetime_str: str, period: Literal["ALL", "W", "M", "Y"
             "total_amount": get_total_income(filtered_operations),
             "main": get_main_income(filtered_operations).to_dict(orient="records")
         },
-        # "currency_rates": get_currency_rates(currencies).to_dict(orient="records"),
-        # "stock_prices": get_stocks_prices(symbols).to_dict(orient="records")
+        "currency_rates": get_currency_rates(currencies).to_dict(orient="records"),
+        "stock_prices": get_stocks_prices(symbols).to_dict(orient="records")
     }
 
     return result

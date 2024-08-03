@@ -169,3 +169,12 @@ def transfers_cash_data():
         "Сумма операции": [-100, -200, -300, -400, -500, -600]
     }
     return pd.DataFrame(data)
+
+
+@pytest.fixture
+def main_income_df():
+    data = {
+        "Категория": ["Зарплата", "Проценты", "Проценты", "Зарплата", "Подарки"],
+        "Сумма операции": [1000, 200, 300, 500, 100]
+    }
+    return pd.DataFrame(data)
