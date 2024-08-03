@@ -166,7 +166,12 @@ def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame()
 
     top_5 = df.nlargest(5, 'Сумма операции')[['Дата операции', 'Сумма операции', 'Категория', 'Описание']]
-    top_5.columns = ['date', 'amount', 'category', 'description']
+    top_5 = top_5.rename(columns={
+        'Дата операции': 'date',
+        'Сумма операции': 'amount',
+        'Категория': 'category',
+        'Описание': 'description'
+    })
 
     # Convert 'date' to string for consistent comparison
     top_5['date'] = top_5['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
