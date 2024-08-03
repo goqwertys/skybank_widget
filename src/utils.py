@@ -269,7 +269,24 @@ def get_total_income(df: pd.DataFrame) -> float:
 
 
 def get_main_income(df: pd.DataFrame) -> pd.DataFrame:
-    return pd.DataFrame()
+    """Returns DataFrame of income by first most expensive categories the rest are combined into one"""
+    logger.info("Calculating the main income....")
+    if df.empty:
+        return pd.DataFrame()
+
+    df_income = df[df["Сумма операции"] > 0].copy()  # Создаем копию среза
+    if df_income.empty:
+        return pd.DataFrame()
+
+    # Grouping
+    df_grouped = df_income.groupby("Категория")["Сумма операции"].sum().reset_index()
+
+    # Sorting
+    result = df_grouped.sort_values(by="Сумма операции", ascending=False)
+
+    result.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
+    logger.info(f"Final main income dataframe: {result.shape}")
+    return result
 
 
 # SETTINGS
