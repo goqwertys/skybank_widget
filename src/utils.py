@@ -339,6 +339,7 @@ def get_stocks(settings: str) -> list[str]:
 
 
 def is_valid_datetime_format(date_string):
+    """ Checks if a string is valid for conversion to datetime """
     try:
         datetime.strptime(date_string, '%Y-%m-%d %H:%M:%S')
         return True
