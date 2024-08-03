@@ -19,7 +19,7 @@ if __name__ == "__main__":
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     path = os.path.join(get_project_root(), DATA_FOLDER, EVENTS_PAGE_INFO_FILENAME)
-    events_info = get_events_page_info("2019-05-31 14:50:14", "W")
+    events_info = get_events_page_info("2019-05-31 14:50:14", "Y")
     with open(path, 'w') as f:
         json.dump(events_info, f, indent=4, ensure_ascii=False)
 

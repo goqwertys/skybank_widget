@@ -191,13 +191,6 @@ def get_total_expenses(df: pd.DataFrame) -> float:
         logger.info("DataFrame is empty")
         return 0.0
 
-    # Убедитесь, что столбец "Сумма платежа" имеет тип данных float
-    if "Сумма платежа" not in df.columns:
-        logger.error("Столбец 'Сумма платежа' отсутствует в DataFrame")
-        return 0.0
-
-    df["Сумма платежа"] = df["Сумма платежа"].astype(float)
-
     result = -df[df["Сумма платежа"] < 0]["Сумма платежа"].sum()
     logger.info(f"Total expenses = {result}")
     return round(result, 2)
@@ -211,7 +204,7 @@ def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return pd.DataFrame()
 
-    # Sorting expenses
+    # Filtering expenses
     df_expenses = df[df["Сумма операции"] < 0].copy()  # Создаем копию среза
     if df_expenses.empty:
         return pd.DataFrame()
@@ -241,13 +234,24 @@ def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
     # Union
     result_df = pd.concat([top_categories, other_row], ignore_index=True)
 
-    logger.info(f"Final main expenses dataframe: {result_df.shape}")
+    logger.info(f"Final main expenses dataframe: {result_df}")
 
     return result_df
 
 
 def get_transfers_cash(df: pd.DataFrame) -> pd.DataFrame:
-    return pd.DataFrame()
+    """Returns a DataFrame grouped by the categories "Наличные" and "Переводы"""
+    logger.info("Start processing get_top_5_transactions()")
+    # Filtering operations
+    filtered_df = df[(df["Категория"].isin(["Наличные", "Переводы"])) & (df["Сумма операции"] < 0)]
+
+    grouped_df = filtered_df.groupby("Категория", as_index=False)["Сумма операции"].apply(lambda x: x.abs().sum())
+    grouped_df.columns = ["category", "amount"]
+    grouped_df.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
+
+    result = grouped_df.sort_values(by="amount", ascending=False)
+    logger.info(f"Final main expenses dataframe: {result}")
+    return result
 
 
 def get_total_income(df: pd.DataFrame) -> float:
