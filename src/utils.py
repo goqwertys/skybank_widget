@@ -80,7 +80,7 @@ def get_time_segment(
         end_dt = end_of_year(dt).replace(hour=0, minute=0, second=0, microsecond=0)
     else:
         raise ValueError(f"Unknown period: {period}")
-
+    logger.info(f"Time segment ({start_dt}, {end_dt})")
     return start_dt, end_dt
 
 
@@ -152,14 +152,14 @@ def get_cards_info(transactions: pd.DataFrame) -> pd.DataFrame:
         cashback=('Сумма операции', lambda x: abs(x.sum()) // 100)
     ).reset_index(drop=True)
 
-    logger.info("Aggregation complete")
+    logger.info(f"Aggregation complete df: {aggregated_df.shape}")
     return aggregated_df
 
 
 def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
     """Returns the top 5 transactions by amount"""
-    logger.info("Start processing get_top_5_transactions()")
-    logger.debug(f"Исходный DataFrame:\n{df}")
+    logger.info("Calculating the top 5 transactions...")
+    logger.debug(f"initial DataFrame:\n{df.head()}")
 
     if df.empty:
         logger.info("DataFrame is empty")
@@ -176,8 +176,7 @@ def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
     # Convert 'date' to string for consistent comparison
     top_5['date'] = top_5['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
 
-    logger.info("Finishing processing the get_top_5_transactions function")
-    logger.info(f"Resulting DataFrame:\n{top_5}")
+    logger.info(f"Resulting DataFrame:\n{top_5.head()}")
 
     return top_5
 
@@ -185,21 +184,21 @@ def get_top_5_transactions(df: pd.DataFrame) -> pd.DataFrame:
 def get_total_expenses(df: pd.DataFrame) -> float:
     """ Returns the amount of expenses """
     logger.info("Getting total expenses...")
-    logger.debug(f"Исходный DataFrame:\n{df.shape}")
+    logger.debug(f"Initial DataFrame:\n{df.shape}")
 
     if df.empty:
         logger.info("DataFrame is empty")
         return 0.0
 
     result = -df[df["Сумма платежа"] < 0]["Сумма платежа"].sum()
-    logger.info(f"Total expenses = {result}")
+    logger.info(f"Total expenses: {result}")
     return round(result, 2)
 
 
 def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
     """ Returns DataFrame of expenses by first most expensive categories the rest are combined into one """
     logger.info("Calculating the main expenses....")
-    logger.debug(f"Initial DataFrame:\n{df.shape}")
+    logger.debug(f"Initial DataFrame: {df.head()}")
 
     if df.empty:
         return pd.DataFrame()
@@ -234,14 +233,15 @@ def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
     # Union
     result_df = pd.concat([top_categories, other_row], ignore_index=True)
 
-    logger.info(f"Final main expenses dataframe: {result_df}")
+    logger.info(f"Final main expenses dataframe:\n{result_df.head()}")
 
     return result_df
 
 
 def get_transfers_cash(df: pd.DataFrame) -> pd.DataFrame:
     """Returns a DataFrame grouped by the categories "Наличные" and "Переводы"""
-    logger.info("Start processing get_top_5_transactions()")
+    logger.info("Calculating top 5 transactions...")
+    logger.info(f"Initial dataframe:\n{df.head()}")
     # Filtering operations
     filtered_df = df[(df["Категория"].isin(["Наличные", "Переводы"])) & (df["Сумма операции"] < 0)]
 
@@ -251,7 +251,7 @@ def get_transfers_cash(df: pd.DataFrame) -> pd.DataFrame:
             "category": ["Переводы", "Наличные"],
             "amount": [0.0, 0.0]
         }).sort_values(by="amount", ascending=False).reset_index(drop=True)
-        logger.info(f"Final main expenses dataframe: {result}")
+        logger.info(f"Final main expenses dataframe:\n{result}")
         return result
     else:
         grouped_df = filtered_df.groupby("Категория", as_index=False)["Сумма операции"].apply(lambda x: x.abs().sum())
@@ -259,14 +259,14 @@ def get_transfers_cash(df: pd.DataFrame) -> pd.DataFrame:
         grouped_df.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
         result = grouped_df.sort_values(by="amount", ascending=False)
         result = result.reset_index(drop=True)
-        logger.info(f"Final main expenses dataframe: {result}")
+        logger.info(f"Final main expenses dataframe:\n{result.head()}")
         return result
 
 
 def get_total_income(df: pd.DataFrame) -> float:
     """ Returns the amount of expenses """
     logger.info("Getting total expences...")
-    logger.debug(f"Original DataFrame:\n{df}")
+    logger.debug(f"Original DataFrame:\n{df.head()}")
 
     if df.empty:
         logger.info("DataFrame is empty")
@@ -281,10 +281,12 @@ def get_main_income(df: pd.DataFrame) -> pd.DataFrame:
     """Returns DataFrame of income by first most expensive categories the rest are combined into one"""
     logger.info("Calculating the main income....")
     if df.empty:
+        logger.info("Parameter df is empty, an empty Dataframe will be returned")
         return pd.DataFrame()
 
     df_income = df[df["Сумма операции"] > 0].copy()  # Создаем копию среза
     if df_income.empty:
+        logger.info("No income found")
         return pd.DataFrame()
 
     # Grouping
@@ -295,7 +297,7 @@ def get_main_income(df: pd.DataFrame) -> pd.DataFrame:
 
     result.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
     result = result.reset_index(drop=True)
-    logger.info(f"Final main income dataframe: {result.shape}")
+    logger.info(f"Final main income dataframe:\n{result.head()}")
     return result
 
 

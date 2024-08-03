@@ -20,6 +20,7 @@ logger.addHandler(fh)
 
 def get_currency_rates(currencies: list[str]) -> pd.DataFrame:
     """ Returns a dataframe of currency rates"""
+    logger.info("Requesting currency data...")
 
     load_dotenv()
     api_key = os.getenv("EXCHANGE_RATES_API_KEY")
@@ -43,12 +44,14 @@ def get_currency_rates(currencies: list[str]) -> pd.DataFrame:
             "currency": currency,
             "rate": rate
         })
-
-    return pd.DataFrame(result)
+    result_df = pd.DataFrame(result)
+    logger.info(f"Result currency rates:\n{result_df}")
+    return result_df
 
 
 def get_stocks_prices(symbols: list[str]) -> pd.DataFrame:
     """ Returns a dataframe of stocks rates"""
+    logger.info("Requesting stocks data...")
     load_dotenv()
     api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
     base_url = "https://www.alphavantage.co/query"
@@ -86,4 +89,6 @@ def get_stocks_prices(symbols: list[str]) -> pd.DataFrame:
                 "price": 0.0,
             })
 
-    return pd.DataFrame(result)
+    result_df = pd.DataFrame(result)
+    logger.info(f"Result currency rates:\n{result_df}")
+    return result_df

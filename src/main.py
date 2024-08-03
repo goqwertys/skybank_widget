@@ -41,17 +41,17 @@ if __name__ == "__main__":
     if events_info_date == "X":
         logger.warning("Event page data will not be retrieved")
         events_info_date = None
-
-    while True:
-        period = input(
-            "Введите 'ALL', 'W', 'M', 'Y' для выбора периода для страницы 'События' или 'X' для пропуска\n")
-        if period in ["ALL", "W", "M", "Y", "X"]:
-            break
-    if period == "X":
-        logger.warning("Event page data will not be retrieved")
-        events_info_date = None
     else:
-        logger.info(f"Data for the 'Main' page: {main_info_date}")
+        while True:
+            period = input(
+                "Введите 'ALL', 'W', 'M', 'Y' для выбора периода для страницы 'События' или 'X' для пропуска\n")
+            if period in ["ALL", "W", "M", "Y", "X"]:
+                break
+        if period == "X":
+            logger.warning("Event page data will not be retrieved")
+            events_info_date = None
+        else:
+            logger.info(f"Data for the 'Main' page: {main_info_date}")
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if main_info_date:
         path = os.path.join(get_project_root(), DATA_FOLDER, MAIN_PAGE_INFO_FILENAME)
