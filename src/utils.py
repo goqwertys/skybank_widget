@@ -336,3 +336,11 @@ def get_stocks(settings: str) -> list[str]:
     except Exception as ex:
         logger.error(f"An error has occurred: {ex}")
         return []
+
+
+def is_valid_datetime_format(date_string):
+    try:
+        datetime.strptime(date_string, '%Y-%m-%d %H:%M:%S')
+        return True
+    except ValueError:
+        return False
