@@ -160,3 +160,12 @@ def test_df():
         'Статус': ['OK', 'OK', 'OK', 'OK']
     }
     return pd.DataFrame(data)
+
+
+@pytest.fixture
+def transfers_cash_data():
+    data = {
+        "Категория": ["Наличные", "Переводы", "Прочее", "Наличные", "Переводы", "Прочее"],
+        "Сумма операции": [-100, -200, -300, -400, -500, -600]
+    }
+    return pd.DataFrame(data)

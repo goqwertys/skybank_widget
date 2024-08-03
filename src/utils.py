@@ -199,7 +199,7 @@ def get_total_expenses(df: pd.DataFrame) -> float:
 def get_main_expenses(df: pd.DataFrame) -> pd.DataFrame:
     """ Returns DataFrame of expenses by first most expensive categories the rest are combined into one """
     logger.info("Calculating the main expenses....")
-    logger.debug(f"Исходный DataFrame:\n{df.shape}")
+    logger.debug(f"Initial DataFrame:\n{df.shape}")
 
     if df.empty:
         return pd.DataFrame()
@@ -245,13 +245,21 @@ def get_transfers_cash(df: pd.DataFrame) -> pd.DataFrame:
     # Filtering operations
     filtered_df = df[(df["Категория"].isin(["Наличные", "Переводы"])) & (df["Сумма операции"] < 0)]
 
-    grouped_df = filtered_df.groupby("Категория", as_index=False)["Сумма операции"].apply(lambda x: x.abs().sum())
-    grouped_df.columns = ["category", "amount"]
-    grouped_df.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
-
-    result = grouped_df.sort_values(by="amount", ascending=False)
-    logger.info(f"Final main expenses dataframe: {result}")
-    return result
+    if filtered_df.empty:
+        logger.info(f"No categories 'Переводы' 'Наличные'")
+        result = pd.DataFrame({
+            "category": ["Переводы", "Наличные"],
+            "amount": [0.0, 0.0]
+        }).sort_values(by="amount", ascending=False).reset_index(drop=True)
+        logger.info(f"Final main expenses dataframe: {result}")
+        return result
+    else:
+        grouped_df = filtered_df.groupby("Категория", as_index=False)["Сумма операции"].apply(lambda x: x.abs().sum())
+        grouped_df.columns = ["category", "amount"]
+        grouped_df.rename(columns={'Категория': 'category', 'Сумма операции': 'amount'}, inplace=True)
+        result = grouped_df.sort_values(by="amount", ascending=False)
+        logger.info(f"Final main expenses dataframe: {result}")
+        return result
 
 
 def get_total_income(df: pd.DataFrame) -> float:
