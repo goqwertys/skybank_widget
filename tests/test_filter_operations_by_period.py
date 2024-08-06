@@ -4,7 +4,7 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
-from src.utils import filter_operations_by_period
+from src.utils_eventspage import filter_operations_by_period
 
 
 def test_filter_operations_by_period_all(test_df):

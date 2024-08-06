@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.utils import get_cards_info
+from src.utils_mainpage import get_cards_info
 
 
 def test_get_cards_info_empty():

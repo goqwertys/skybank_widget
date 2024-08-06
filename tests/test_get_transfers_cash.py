@@ -1,8 +1,6 @@
 import pandas as pd
-import pytest
-from unittest.mock import patch
 
-from src.utils import get_transfers_cash
+from src.utils_eventspage import get_transfers_cash
 
 
 def test_get_transfers_cash_with_valid_data(transfers_cash_data):

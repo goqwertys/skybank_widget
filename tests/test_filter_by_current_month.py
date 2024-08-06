@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pandas as pd
 
-from src.utils import filter_by_current_month
+from src.utils_mainpage import filter_by_current_month
 
 
 def test_filter_by_current_month(sample_df, expected_filtered):

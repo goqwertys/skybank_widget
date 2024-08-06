@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytest
 
-from src.utils import get_time_segment
+from src.utils_eventspage import get_time_segment
 
 
 def test_get_time_segment_week():

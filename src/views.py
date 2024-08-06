@@ -1,4 +1,5 @@
 """Basic functions for generating JSON responses"""
+import logging
 import os.path
 from datetime import datetime
 from typing import Dict, List, Literal, Union
@@ -6,15 +7,27 @@ from typing import Dict, List, Literal, Union
 import pandas as pd
 
 from src.config import (AFTERNOON_EVENING, DATA_FOLDER, EVENING_NIGHT,
-                        GREETINGS_DICT, MORNING_AFTERNOON, NIGHT_MORNING,
-                        OPERATIONS_FILENAME, USER_SETTINGS_FILENAME)
+                        GREETINGS_DICT, LOG_LEVEL, MORNING_AFTERNOON,
+                        NIGHT_MORNING, OPERATIONS_FILENAME,
+                        USER_SETTINGS_FILENAME)
 from src.external_api import get_currency_rates, get_stocks_prices
 from src.paths import get_project_root
-from src.utils import (filter_by_current_month, filter_operations_by_period,
-                       get_cards_info, get_currencies, get_main_expenses,
-                       get_main_income, get_stocks, get_top_5_transactions,
-                       get_total_expenses, get_total_income,
-                       get_transfers_cash, load_operations)
+from src.utils import get_currencies, get_stocks, load_operations
+from src.utils_eventspage import (filter_operations_by_period,
+                                  get_main_expenses, get_main_income,
+                                  get_total_expenses, get_total_income,
+                                  get_transfers_cash)
+from src.utils_mainpage import (filter_by_current_month, get_cards_info,
+                                get_top_5_transactions)
+
+# Logger setup
+logger = logging.getLogger(__name__)
+logger.setLevel(LOG_LEVEL)
+log_path = os.path.join(get_project_root(), 'logs', f'{__name__}.log')
+fh = logging.FileHandler(log_path, mode='w')
+formatter = logging.Formatter('%(asctime)s - %(module)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+logger.addHandler(fh)
 
 
 def greetings(datetime_str: str) -> str:

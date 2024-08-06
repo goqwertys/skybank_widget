@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.utils import get_top_5_transactions
+from src.utils_mainpage import get_top_5_transactions
 
 
 def test_get_top_5_transactions_empty():

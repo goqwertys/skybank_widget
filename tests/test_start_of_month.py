@@ -1,8 +1,7 @@
 from datetime import datetime
-
 import pytest
 
-from src.utils import start_of_month
+from src.utils_mainpage import start_of_month
 
 
 @pytest.mark.parametrize("input_datetime, expected", [

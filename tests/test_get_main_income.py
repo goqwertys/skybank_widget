@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.utils import get_main_income
+from src.utils_eventspage import get_main_income
 
 
 def test_get_main_income_with_valid_data(main_income_df):

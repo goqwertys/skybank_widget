@@ -1,14 +1,12 @@
 import json
 import logging
 import os.path
-from typing import Literal
 
-from src.config import (DATA_FOLDER, EVENTS_PAGE_INFO_FILENAME,
-                        MAIN_PAGE_INFO_FILENAME, LOG_LEVEL)
+from src.config import (DATA_FOLDER, EVENTS_PAGE_INFO_FILENAME, LOG_LEVEL,
+                        MAIN_PAGE_INFO_FILENAME)
 from src.paths import get_project_root
 from src.utils import is_valid_datetime_format
 from src.views import get_events_page_info, get_main_page_info
-
 
 # Logger setup
 logger = logging.getLogger(__name__)
@@ -34,7 +32,8 @@ if __name__ == "__main__":
     logger.info(f"Data for the 'Main' page: {main_info_date}")
 
     while True:
-        events_info_date = input("Введите дату в формате: YYYY-MM-DD HH:MM:SS для страницы 'События' или X для выхода\n")
+        events_info_date = input("Введите дату в формате: YYYY-MM-DD HH:MM:SS \
+для страницы 'События' или X для выхода\n")
         if events_info_date == "X" or is_valid_datetime_format(events_info_date):
             break
         print("Некорректный формат даты, введите дату в формате YYYY-MM-DD HH:MM:SS или X для выхода:")

@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.utils import get_main_expenses
+from src.utils_eventspage import get_main_expenses
 
 
 def test_get_main_expenses_empty_df():
